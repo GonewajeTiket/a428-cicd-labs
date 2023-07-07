@@ -26,11 +26,23 @@ jobs:
                sudo git init a428-cicd-labs;
           fi
           cd /var/www/html/a428-cicd-labs
+          sudo git remote rm origin
           sudo git remote add origin https://${{ secrets.GIT_USER }}:${{ secrets.GIT_TOKEN }}@github.com/GonewajeTiket/a428-cicd-labs.git
           sudo git pull origin master
           sudo git add *
           sudo git commit -m "Auto Build and Deploy"
+          echo "================================================"
+          echo "install dependencies"
           sudo npm install
+
+          echo "================================================"
+          echo "stop existing run react-app"          
           sudo sh jenkins/scripts/stop.sh
+          
+          echo "================================================"
+          echo "run npm test"
           sudo sh jenkins/scripts/test.sh
+          
+          echo "================================================"
+          echo "deploy react-app"
           sudo sh jenkins/scripts/deliver.sh
