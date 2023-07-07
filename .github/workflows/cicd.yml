@@ -1,0 +1,36 @@
+name: Dicoding-React-App
+
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - react-app
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: deploy on gce server
+      if: github.ref == 'refs/heads/react-ap'
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.IP_SERVER }}
+        username: ${{ secrets.USER_SERVER }}
+        key: ${{ secrets.KEY_SERVER }}
+        port: ${{ secrets.PORT }}
+        script: |
+          cd /var/www/html
+          if [ ! -d "./a428-cicd-labs" ];
+             then
+               sudo git init a428-cicd-labs;
+          fi
+          cd /var/www/html/a428-cicd-labs
+          sudo git remote add origin https://${{ secrets.GIT_USER }}:${{ secrets.GIT_TOKEN }}@github.com/GonewajeTiket/a428-cicd-labs.git
+          sudo git pull origin master
+          sudo git add *
+          sudo git commit -m "Auto Build and Deploy"
+          sudo npm install
+          sudo sh jenkins/scripts/stop.sh
+          sudo sh jenkins/scripts/test.sh
+          sudo sh jenkins/scripts/deliver.sh
