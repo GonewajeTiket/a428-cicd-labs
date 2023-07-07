@@ -28,7 +28,7 @@ jobs:
           cd /var/www/html/a428-cicd-labs
           sudo git remote rm origin
           sudo git remote add origin https://${{ secrets.GIT_USER }}:${{ secrets.GIT_TOKEN }}@github.com/GonewajeTiket/a428-cicd-labs.git
-          sudo git pull origin master
+          sudo git pull origin react-app
           sudo git add *
           sudo git commit -m "Auto Build and Deploy"
           echo "================================================"
