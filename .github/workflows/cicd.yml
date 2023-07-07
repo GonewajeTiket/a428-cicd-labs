@@ -12,7 +12,7 @@ jobs:
 
     steps:
     - name: deploy on gce server
-      if: github.ref == 'refs/heads/react-ap'
+      if: github.ref == 'refs/heads/react-app'
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.IP_SERVER }}
